@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/loginst.css" type="text/css" media="all" />
+    
+</head>
+<body>
+    <div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+    <h2 class="inactive underlineHover"><a href="http://localhost:8080/ssignup">Sign up for shop</a>  </h2>
+    <h2 class="inactive underlineHover"><a href="http://localhost:8080/csignup">Sign up as customer</a>  </h2>
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="css/images/icon.jpg" id="icon" alt="User Icon" />
+    </div>
+
+    <!-- Login Form -->
+    <form action="http://localhost:8080/loginId" method="post">
+      
+      <input type="text" id="login" class="fadeIn second" name="user" placeholder="username:">
+      <input type="text" id="login" class="fadeIn second" name="role" placeholder="role:e.g. login as customer or shop">
+      
+      <input type="password" id="password" class="fadeIn third" name="pass" placeholder="password:">
+      <br>
+      <input type="submit" class="fadeIn fourth" value="Log in">
+      <input type="hidden" id="custId" name="id" value="{{d}}">
+      
+    </form>
+
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
+    </div>
+
+  </div>
+</div>
+<script>
+  //console.log({{d.user}});
+  
+  
+
+
+
+</script>
+    
+</body>
+</html>
+
+
+

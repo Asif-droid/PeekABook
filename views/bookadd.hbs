@@ -1,0 +1,70 @@
+<!--
+Author: Colorlib
+Author URL: https://colorlib.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>bookadd</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/signup.css" rel="stylesheet" type="text/css" media="all" />
+<!-- //Custom Theme files -->
+<!-- web font -->
+<link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+<!-- //web font -->
+</head>
+<body bgcolor="yellow">
+	<!-- main -->
+	<div  class="main-w3layouts wrapper" >
+		<h1 #important bgcolor="yellow">Add book</h1>
+        <p color="red">{{m}}</p>
+		<div class="main-agileinfo">
+			<div class="agileits-top">
+				<form action="http://localhost:8080/bookadd" method="post">
+                    <input class="text" type="text" name="isbn" placeholder="ISBN" required="">
+					<input class="text" type="text" name="name" placeholder="Book name" required="">
+                    <input class="text " type="text" name="edition" placeholder="Edition" required="">
+
+					<input class="text" type="text" name="genre" placeholder="Genre" required="">
+					
+					<input class="text" type="text" name="author" placeholder="Author" required="">
+					<input class="text" type="text" name="publisher" placeholder="Publisher" required="">
+					<input class="text" type="text" name="lan" placeholder="Language" required="">
+					<input class="text" type="text" name="des" placeholder="description" required="">
+					<input class="text" type="text" name="pages" placeholder="pages" required="">
+					<input class="text" type="text" name="quan" placeholder="Quantity" required="">
+                    <input class="text" type="text" name="price" placeholder="Price per book" required="">
+					<input  type="hidden" name="sid" value="{{sid}}">
+					<input type="submit" value="Add">
+				</form>
+                
+				
+			</div>
+		</div>
+		<!-- copyright -->
+		<div class="colorlibcopy-agile">
+			
+		</div>
+		<!-- //copyright -->
+		<ul class="colorlib-bubbles">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<!-- //main -->
+</body>
+</html>
