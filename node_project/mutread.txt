@@ -1,2 +1,0 @@
-to send multiple data use form _> action post method ex in login
-hidden obj to send prev data
