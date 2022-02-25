@@ -96,19 +96,13 @@ grant create session, create view,
  to &username;
 ```
 - Go to sql_dumps folder and run all sql files to create the database
-
+- Enable procedures and triggers provided in the Procedures and Triggres folder
 
 
 **Install all dependencies**
 
-  1.Creating Tables and Setting Connection with Database
- 
-    - Enable procedures and triggers provided in the Procedures and Triggres folder
-
-    - Provide username and pass of the user under which those tables and procedures are created, in the function.js file located in the node_project folder 
-
-
-    ```bash  
+  1.Provide username and pass of the user under which those tables and procedures are created, in the function.js file located in the node_project folder 
+  
         try{
             connection = await oracle.getConnection({
                 user:'c##asifur', // username of db user
@@ -124,12 +118,12 @@ grant create session, create view,
 
         }
 
-    ```
+   
 
   2. Install [npm](https://www.npmjs.com/) & [node](https://nodejs.org/en/download/)
-    ``` bash  
+     
     npm install
-    ```
+  
   3. Go to the package.json and install all dependencing by npm i dependency_filename
 ## Deployment
 
