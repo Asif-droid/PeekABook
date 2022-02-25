@@ -96,19 +96,50 @@ grant create session, create view,
  to &username;
 ```
 - Go to sql_dumps folder and run all sql files to create the database
-- Check all triggers and procedures are enabled
+
 
 
 **Install all dependencies**
 
-  1. Install [npm](https://www.npmjs.com/) & [node](https://nodejs.org/en/download/)
-      
+  1.Creating Tables and Setting Connection with Database
+ 
+    - Enable procedures and triggers provided in the Procedures and Triggres folder
+
+    - Provide username and pass of the user under which those tables and procedures are created, in the function.js file located in the node_project folder 
+
+
+    ```bash  
+        try{
+            connection = await oracle.getConnection({
+                user:'c##asifur', // username of db user
+                password:'123',     //pass of db user
+                connectString : 'localhost/orcl'
+                //"(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))(CONNECT_DATA =(SID= ORCL)))"
+            });
+            let result=await connection.execute(query,params);
+            // console.log(result.rows,"row");weniweubngwunewgoin
+            return result.rows;   
+        }catch(error){
+            console.log(error);
+
+        }
+
+    ```
+
+  2. Install [npm](https://www.npmjs.com/) & [node](https://nodejs.org/en/download/)
+    ``` bash  
     npm install
     ```
-  2. Go to the package.json and install all dependencing by running command like
-     npm i dependency_filename
+  3. Go to the package.json and install all dependencing by npm i dependency_filename
+## Deployment
 
-- ### Now start the server by running index.js
+To deploy this project navigate to the node_project folder and run in cmd 
+
+```bash
+  node index.js
+```
+- The server listens at 8080 port
+- Go to  http://localhost:8080/peekabook to view
 
     
  
