@@ -105,7 +105,8 @@ grant create session, create view,
       
     npm install
     ```
-  2. Go to the package.json and install all dependencing by npm i dependency_filename
+  2. Go to the package.json and install all dependencing by running command like
+     npm i dependency_filename
 
 - ### Now start the server by running index.js
 
