@@ -649,9 +649,9 @@ router.post('/authoradd',async(req,res,next)=>{
 
     var info=req.body;
     console.log(info);
-    /*var q="DECLARE BEGIN add_author('"+ info.name+"', '"+info.summ+"', '"+info.street+"', '"+info.thana+"',"+info.pcode+", '"+info.dist+"'); END;";
+    var q="DECLARE BEGIN add_author('"+ info.name+"', '"+info.summ+"', '"+info.street+"', '"+info.thana+"',"+info.pcode+", '"+info.dist+"'); END;";
     var p=[];
-    let result=await logger.log(q,p);*/
+    let result=await logger.log(q,p);
     res.render('adminpro',{d:info.id});
 
 })
