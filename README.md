@@ -41,13 +41,14 @@ PeekAbook is a online book buy site where one can find various bookshops and can
   - Can add books in his shop
 - Orders
   - Can see existing orders and can remove them after delivery
-
+- Total Earning
+  - Can see the total amount of money the shop earned through different orders
 ## `Admin Dashboard`
 - All shops 
     - Can see all existing shops
 - Approve 
     - Can approve new shop
-    - After approval shop owner can login and add books
+    - Only after admin approval shop owner can login and add books
 - Add Author 
     - Can add new authors
 - Add Publisher
