@@ -1,0 +1,359 @@
+
+---------------------------------ading CUSTOMER-----------------------------------
+
+
+
+
+
+
+
+CREATE OR replace PROCEDURE add_customer(fname IN VARCHAR2, lname IN VARCHAR2, cemail IN VARCHAR2, astreet IN VARCHAR2, athana IN VARCHAR2, apostal_code IN VARCHAR2, dname IN VARCHAR2,username IN VARCHAR2,pass IN VARCHAR2) IS
+dist_id INTEGER ;
+a_id INTEGER ;
+i INTEGER ;
+j INTEGER ;
+cid INTEGER;
+BEGIN
+		--add district
+		i := 0;
+		FOR R IN (SELECT DISTRICT_NAME FROM DISTRICT) 
+		LOOP
+				IF UPPER(R.DISTRICT_NAME)= UPPER(dname) THEN
+						i :=1;
+			  END IF;
+				EXIT WHEN i=1; 
+		END LOOP;
+		IF i=0 THEN
+				INSERT INTO DISTRICT(DISTRICT_NAME) VALUES(dname);
+		END IF;
+		SELECT DISTRICT_ID INTO dist_id FROM DISTRICT WHERE UPPER(DISTRICT_NAME)= UPPER(dname);
+		DBMS_OUTPUT.PUT_LINE(dist_id);
+		
+		--Add_Address
+		j := 0;
+		FOR R1 IN (SELECT STREET FROM ADDRESS_DETAIL) 
+		LOOP
+				IF UPPER(R1.STREET)= UPPER(astreet) THEN
+						j :=1;
+			  END IF;
+				EXIT WHEN j=1; 
+		END LOOP;
+		IF j=0 THEN
+				INSERT INTO ADDRESS_DETAIL(street, thana, postal_code, DISTRICT_ID) VALUES(astreet, athana, apostal_code, dist_id);
+		END IF;
+		SELECT ADDRESS_ID INTO a_id FROM ADDRESS_DETAIL WHERE UPPER(street)= UPPER(astreet);
+		DBMS_OUTPUT.PUT_LINE(a_id);
+		INSERT INTO CUSTOMER(first_name, last_name, email, address_id,username,pass) VALUES(fname, lname, cemail, a_id,username,pass);
+END;
+
+DECLARE
+BEGIN
+		add_customer('ashiqur', 'rahman', 'ashiqur@gmail.com', 'shershah road', 'ishwardi', '6620', 'Pabna','asq111','111');
+END;
+
+DELETE from CUSTOMER WHERE ADDRESS_ID=1101;
+SELECT * from CUSTOMER;
+SELECT * from ADDRESS_DETAIL;
+-------------------------------------------------end---------------------------------------------------------------
+------------------------------------------------add shop----------------------------------------------------------
+
+CREATE OR replace PROCEDURE add_shop(sname IN VARCHAR2, semail IN VARCHAR2, astreet IN VARCHAR2, athana IN VARCHAR2, apostal_code IN VARCHAR2, dname IN VARCHAR2, s_user IN VARCHAR2, s_pass IN VARCHAR2, s_contact IN VARCHAR2, s_des IN VARCHAR2) IS
+dist_id INTEGER ;
+a_id INTEGER ;
+i INTEGER ;
+j INTEGER ;
+BEGIN
+		--add district
+		i := 0;
+		FOR R IN (SELECT DISTRICT_NAME FROM DISTRICT) 
+		LOOP
+				IF UPPER(R.DISTRICT_NAME)= UPPER(dname) THEN
+						i :=1;
+			  END IF;
+				EXIT WHEN i=1; 
+		END LOOP;
+		IF i=0 THEN
+				INSERT INTO DISTRICT(DISTRICT_NAME) VALUES(dname);
+		END IF;
+		SELECT DISTRICT_ID INTO dist_id FROM DISTRICT WHERE UPPER(DISTRICT_NAME)= UPPER(dname);
+		
+		--Add_Address
+		j := 0;
+		FOR R1 IN (SELECT STREET, THANA FROM ADDRESS_DETAIL) 
+		LOOP
+				IF UPPER(R1.STREET)= UPPER(astreet) AND UPPER(R1.THANA)= UPPER(athana) THEN
+						j :=1;
+			  END IF;
+				EXIT WHEN j=1; 
+		END LOOP;
+		IF j=0 THEN
+				INSERT INTO ADDRESS_DETAIL(street, thana, postal_code, DISTRICT_ID) VALUES(astreet, athana, apostal_code, dist_id);
+		END IF;
+		SELECT ADDRESS_ID INTO a_id FROM ADDRESS_DETAIL WHERE UPPER(street)= UPPER(astreet) AND UPPER(THANA)= UPPER(athana);
+		INSERT INTO SHOP(SHOP_NAME, email, address_id, USERNAME, PASS, CONTACT_NO, DESCRIPTION) VALUES(sname, semail, a_id, s_user, s_pass,s_contact, s_des);
+	
+	
+END;
+
+DECLARE
+BEGIN
+		add_shop('New book', 'book21@gmail.com', 'Neelkhet', 'New Market', '1332', 'Dhaka', 'bbaxzn', '444', '01794577852', NULL);
+		--add_shop('Prothoma', 'prothoma21@gmail.com', 'Shahbag', 'New Market', 1345, 'Dhaka', 'psdbs', '77sd', '01774557652', 'Huge and original collection of books');
+END;
+SELECT a.STREET, a.THANA, a.POSTAL_CODE, d.DISTRICT_NAME
+from ADDRESS_DETAIL a join DISTRICT d 
+on(a.DISTRICT_ID = d.DISTRICT_ID)
+WHERE a.ADDRESS_ID=1120;
+
+
+
+SELECT * from SHOP ;
+
+
+
+----------------------------------------------------------------------------end-------------------------------------------------------------
+-------------------------------------------------------------book add----------------------------------------------------------------
+CREATE OR replace PROCEDURE add_book(s_id IN INTEGER, b_name IN VARCHAR2, b_genre IN VARCHAR2, a_name IN VARCHAR2, p_name IN VARCHAR2, b_lang IN VARCHAR2, b_summ IN VARCHAR2, b_isbn IN VARCHAR2, b_page IN INTEGER, b_quantity IN INTEGER, b_edition IN VARCHAR2, b_price IN INTEGER) IS
+a_id INTEGER ;
+p_id INTEGER ;
+b_id INTEGER;
+b1_name VARCHAR2(500);
+b1_isbn VARCHAR2(500);
+b1_edition VARCHAR2(500);
+i INTEGER ;
+j INTEGER ;
+k INTEGER;
+BEGIN
+		SELECT BOOK_ID, BOOK_NAME, ISBN, EDITION INTO b_id, b1_name, b1_isbn, b1_edition FROM BOOK
+		WHERE UPPER(BOOK_NAME)= UPPER(b_name) AND UPPER(ISBN)= UPPER(b_isbn) AND UPPER(EDITION)= UPPER(b_edition);
+		UPDATE BOOK 
+		SET QUANTITY= QUANTITY+ b_quantity
+		WHERE BOOK_ID= b_id;
+		FOR k IN 1..b_quantity 
+		LOOP
+			INSERT INTO BOOK_COPY(BOOK_ID, SHOP_ID) VALUES(b_id, s_id);
+		END LOOP;
+EXCEPTION
+		WHEN NO_DATA_FOUND THEN
+			--add author
+				i := 0;
+				FOR R IN (SELECT AUTHOR_NAME FROM AUTHOR) 
+				LOOP
+				IF UPPER(R.AUTHOR_NAME)= UPPER(a_name) THEN
+						i :=1;
+				END IF;
+					EXIT WHEN i=1; 
+				END LOOP;
+				IF i=0 THEN
+					INSERT INTO AUTHOR(AUTHOR_NAME) VALUES(a_name);
+				END IF;
+				SELECT AUTHOR_ID INTO a_id FROM AUTHOR WHERE UPPER(AUTHOR_NAME)= UPPER(a_name);
+
+				--Add_publisher
+				j := 0;
+				FOR R1 IN (SELECT PUBLISHER_NAME FROM PUBLISHER) 
+				LOOP
+				IF UPPER(R1.PUBLISHER_NAME)= UPPER(p_name) THEN
+						j :=1;
+				END IF;
+				EXIT WHEN j=1; 
+				END LOOP;
+				IF j=0 THEN
+					INSERT INTO PUBLISHER(PUBLISHER_NAME) VALUES(p_name);
+				END IF;
+				SELECT PUBLISHER_ID INTO p_id FROM PUBLISHER WHERE UPPER(PUBLISHER_NAME)= UPPER(p_name);
+				INSERT INTO BOOK(BOOK_NAME, BOOK_GENRE, AUTHOR_ID, PUBLISHER_ID, LANGUAGE, SUMMARY, ISBN, PAGES, QUANTITY, EDITION, PRICE_PER_BOOK) VALUES(					b_name, b_genre, a_id, p_id, b_lang, b_summ, b_isbn, b_page, b_quantity, b_edition, b_price);	
+
+				SELECT BOOK_ID INTO b_id FROM BOOK 
+				WHERE UPPER(BOOK_NAME)= UPPER(b_name) AND UPPER(ISBN)= UPPER(b_isbn) AND UPPER(EDITION)= UPPER(b_edition); 
+				FOR k IN 1..b_quantity 
+				LOOP
+					INSERT INTO BOOK_COPY(BOOK_ID, SHOP_ID) VALUES(b_id, s_id);
+				END LOOP;
+				WHEN TOO_MANY_ROWS THEN
+						DBMS_OUTPUT.PUT_LINE('More than one row found.') ; 
+				WHEN OTHERS THEN
+						DBMS_OUTPUT.PUT_LINE('Some unknown error occurred.') ;
+END;
+
+DECLARE
+BEGIN
+		add_book(20021, 'KEPLAR 22B', 'Novel', 'Md. Jafar Iqbal','ProthomaProkash', 'Bangla', NULL, '11222352345', 120, 3, '2nd edition', 220);
+END;
+SELECT * from BOOK_COPY;
+
+SELECT * FROM BOOK b1,(SELECT DISTINCT BOOK_ID FROM BOOK_COPY WHERE SHOP_ID=20021) b2
+WHERE b1.BOOK_ID=b2.BOOK_ID;
+
+SELECT b1.BOOK_ID,b1.BOOK_NAME FROM BOOK b1,(SELECT DISTINCT BOOK_ID FROM BOOK_COPY WHERE SHOP_ID=20021) b2 WHERE b1.BOOK_ID=b2.BOOK_ID;
+
+
+
+
+SELECT s.SHOP_ID, s.SHOP_NAME FROM SHOP s join (SELECT SHOP_ID FROM BOOK_COPY WHERE BOOK_ID=(SELECT BOOK_ID from BOOK WHERE BOOK_NAME='gitanjoli')) b
+WHERE s.SHOP_ID=b.SHOP_ID;
+----------------------------------for search--------------------------------------------------
+SELECT s.SHOP_NAME,s.SHOP_ID from SHOP s join (SELECT DISTINCT SHOP_ID FROM BOOK_COPY WHERE BOOK_ID=(SELECT BOOK_ID from BOOK WHERE BOOK_NAME='gitanjoli')) s2
+ON(s.SHOP_ID = s2.SHOP_ID);
+
+------------------------------------------------------------END-------------------------------------------------------------------------------
+SELECT (FIRST_NAME||' '||LAST_NAME) NAME FROM CUSTOMER WHERE CUSTOMER_ID=501;
+
+-------------------------------------------buy----------------------------------------------
+
+
+SELECT o.CUSTOMER_ID,o.ADDRESS_ID,b.BOOK_NAME,o.TRANSACTION_ID,o.QUANTITY,o.ORDER_ID,o.SHOP_ID from (SELECT BOOK_ID, QUANTITY,ORDER_ID,SHOP_ID, CUSTOMER_ID, ADDRESS_ID, TRANSACTION_ID FROM ORDERS WHERE SHOP_ID=10000) o join BOOK b ON(o.BOOK_ID=b.BOOK_ID);
+
+
+
+SELECT (SELECT BOOK_NAME FROM BOOK B1 WHERE B1.BOOK_ID= B2.BOOK_ID) BOOK_NAME, COUNT(*) QUANTITY 
+FROM BOOK_COPY B2
+WHERE SHOP_ID= 10005
+GROUP BY BOOK_ID
+
+
+--------------------------test-------------------------------------
+SELECT COUNT(*) QUANTITY 
+FROM BOOK_COPY
+WHERE SHOP_ID= 10004 AND BOOK_ID= 10001040;
+
+SELECT SHOP_ID, SHOP_NAME,TOTAL_EARNING from SHOP; 
+
+
+
+
+
+
+
+
+CREATE OR replace PROCEDURE add_author(a_name IN VARCHAR2, a_summ IN VARCHAR2, astreet IN VARCHAR2, athana IN VARCHAR2, apostal_code IN VARCHAR2, dname IN VARCHAR2) IS
+dist_id INTEGER ;
+a_id INTEGER ;
+i INTEGER ;
+j INTEGER ;
+k INTEGER;
+BEGIN
+		k :=0;
+		FOR R IN (SELECT AUTHOR_NAME FROM AUTHOR) 
+		LOOP
+		IF UPPER(a_name)= UPPER(R.AUTHOR_NAME) THEN
+			k :=1;
+		END IF;
+		EXIT WHEN k= 1;
+		END LOOP;
+		
+		IF k= 0 THEN
+			--add district
+			i := 0;
+			FOR R IN (SELECT DISTRICT_NAME FROM DISTRICT) 
+			LOOP
+					IF UPPER(R.DISTRICT_NAME)= UPPER(dname) THEN
+							i :=1;
+					END IF;
+					EXIT WHEN i=1; 
+			END LOOP;
+			IF i=0 THEN
+					INSERT INTO DISTRICT(DISTRICT_NAME) VALUES(dname);
+			END IF;
+			SELECT DISTRICT_ID INTO dist_id FROM DISTRICT WHERE UPPER(DISTRICT_NAME)= UPPER(dname);
+		
+			--Add_Address
+			j := 0;
+			FOR R1 IN (SELECT STREET, THANA FROM ADDRESS_DETAIL) 
+			LOOP
+					IF UPPER(R1.STREET)= UPPER(astreet) AND UPPER(R1.THANA)= UPPER(athana) THEN
+							j :=1;
+					END IF;
+					EXIT WHEN j=1; 
+			END LOOP;
+			IF j=0 THEN
+					INSERT INTO ADDRESS_DETAIL(street, thana, postal_code, DISTRICT_ID) VALUES(astreet, athana, apostal_code, dist_id);
+			END IF;
+			SELECT ADDRESS_ID INTO a_id FROM ADDRESS_DETAIL WHERE UPPER(street)= UPPER(astreet) AND UPPER(THANA)= UPPER(athana);
+			INSERT INTO AUTHOR(AUTHOR_NAME, AUTHOR_SUMMARY, ADDRESS_ID) VALUES(a_name, a_summ, a_id);
+		END IF;
+EXCEPTION
+		WHEN NO_DATA_FOUND THEN
+				DBMS_OUTPUT.PUT_LINE('No row found.') ;
+		WHEN TOO_MANY_ROWS THEN
+				DBMS_OUTPUT.PUT_LINE('More than one row found.') ; 
+		WHEN OTHERS THEN
+				DBMS_OUTPUT.PUT_LINE('Some unknown error occurred.') ;		
+	
+END;
+
+DECLARE
+BEGIN
+		add_author('Abdur Rashid', 'Great Poet', 'Shershah Road', 'Iashwardi', 6620, 'Pabna');
+END;
+
+
+SELECT s1.SHOP_NAME,s1.SHOP_ID from SHOP s1 join (SELECT COUNT(*) ,SHOP_ID from BOOK_COPY GROUP BY SHOP_ID HAVING COUNT(*)<51) s2 ON(s1.SHOP_ID=s2.SHOP_ID) ; 
+
+SELECT COUNT(*),SHOP_ID from BOOK_COPY GROUP BY SHOP_ID;
+
+----------------------------------------------------PUBLISHER-------------------------
+CREATE OR replace PROCEDURE add_publisher(p_name IN VARCHAR2, p_summ IN VARCHAR2, astreet IN VARCHAR2, athana IN VARCHAR2, apostal_code IN VARCHAR2, dname IN VARCHAR2) IS
+dist_id INTEGER ;
+a_id INTEGER ;
+i INTEGER ;
+j INTEGER ;
+k INTEGER;
+BEGIN
+		k :=0;
+		FOR R IN (SELECT PUBLISHER_NAME FROM PUBLISHER) 
+		LOOP
+		IF UPPER(p_name)= UPPER(R.PUBLISHER_NAME) THEN
+			k :=1;
+		END IF;
+		EXIT WHEN k= 1;
+		END LOOP;
+		
+		IF k= 0 THEN
+			--add district
+			i := 0;
+			FOR R IN (SELECT DISTRICT_NAME FROM DISTRICT) 
+			LOOP
+					IF UPPER(R.DISTRICT_NAME)= UPPER(dname) THEN
+							i :=1;
+					END IF;
+					EXIT WHEN i=1; 
+			END LOOP;
+			IF i=0 THEN
+					INSERT INTO DISTRICT(DISTRICT_NAME) VALUES(dname);
+			END IF;
+			SELECT DISTRICT_ID INTO dist_id FROM DISTRICT WHERE UPPER(DISTRICT_NAME)= UPPER(dname);
+		
+			--Add_Address
+			j := 0;
+			FOR R1 IN (SELECT STREET, THANA FROM ADDRESS_DETAIL) 
+			LOOP
+					IF UPPER(R1.STREET)= UPPER(astreet) AND UPPER(R1.THANA)= UPPER(athana) THEN
+							j :=1;
+					END IF;
+					EXIT WHEN j=1; 
+			END LOOP;
+			IF j=0 THEN
+					INSERT INTO ADDRESS_DETAIL(street, thana, postal_code, DISTRICT_ID) VALUES(astreet, athana, apostal_code, dist_id);
+			END IF;
+			SELECT ADDRESS_ID INTO a_id FROM ADDRESS_DETAIL WHERE UPPER(street)= UPPER(astreet) AND UPPER(THANA)= UPPER(athana);
+			INSERT INTO PUBLISHER(PUBLISHER_NAME, PUBLISHER_SUMMARY, ADDRESS_ID) VALUES(p_name, p_summ, a_id);
+		END IF;
+EXCEPTION
+		WHEN NO_DATA_FOUND THEN
+				DBMS_OUTPUT.PUT_LINE('No row found.') ;
+		WHEN TOO_MANY_ROWS THEN
+				DBMS_OUTPUT.PUT_LINE('More than one row found.') ; 
+		WHEN OTHERS THEN
+				DBMS_OUTPUT.PUT_LINE('Some unknown error occurred.') ;		
+	
+END;
+
+DECLARE
+BEGIN
+		add_publisher('Prothoma', 'Huge connection of books', 'shahbag', 'zero point', 1422, 'Dhaka');
+END;
+SELECT * from AUTHOR;
+SELECT * from PUBLISHER;
+
+
