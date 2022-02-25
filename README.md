@@ -140,7 +140,7 @@ To deploy this project navigate to the node_project folder and run in cmd
 
 # Project Team
 
-* [K.M, Asifur Rahman](https://github.com/Asif-droid) : `1805063`
+* [K.M. Asifur Rahman](https://github.com/Asif-droid) : `1805063`
 * [Sanju Basak](https://github.com/Sanju-Basak) : `1805064`
 
 # Project Supervisor
