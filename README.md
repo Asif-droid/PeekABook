@@ -57,6 +57,59 @@ PeekAbook is a online book buy site where one can find various bookshops and can
     - Can see all existing authors
 - Show Publisher
     - Can see all existing publishers
+
+### Database Connection
+In this project the database used is oracle.
+- Holds all the data to function the project correctly. 
+
+### Download
+
+Download zip of this repository, or clone this from git cli
+
+### Dependencies
+
+The project runs on NodeJS environment. So at first you should download node in your machine.
+
+## Installing
+
+After cloning create a database user with the following permission
+- create session.
+- create sequence.
+- create trigger.
+- create table.
+- create procedure
+- unlimited tablespace.
+
+Or, Run the following code in cmd after connecting as sysdba.
+
+```
+define username = <USERNAME>
+define password = <PASSWORD>
+create user &username identified by &password;
+grant create session, create view,
+ create sequence,
+ create procedure,
+ create table,
+ create trigger,
+ create type,
+ create materialized view
+ to &username;
+```
+- Go to sql_dumps folder and run all sql files to create the database
+- Check all triggers and procedures are enabled
+
+
+**Install all dependencies**
+
+  1. Install [npm](https://www.npmjs.com/) & [node](https://nodejs.org/en/download/)
+      
+    npm install
+    ```
+  2. Go to the package.json and install all dependencing by npm i dependency_filename
+
+- ### Now start the server by running index.js
+
+    
  
 
 # Project Team
