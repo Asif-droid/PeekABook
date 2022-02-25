@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="name"> </div>
+    
+
+    <script>
+         async function fn(){
+            const option={
+                method:'GET'
+            };
+            const url="http://localhost:8080/employee/all";
+            const res= await fetch(url,option);
+            const myob= await res.json();
+            console.log(myob.len);
+            let p=document.createElement('p');
+            
+            for(let j in myob){
+                var q=document.createElement('p');
+                q.innerHTML=myob[j].FIRST_NAME ;
+                //q.innerHTML=j;
+                document.getElementById('name').appendChild(q);
+            }
+
+        } 
+        var m=fn();
+
+        function f(){
+            for(let i=0;i<10;i++){
+                var p=document.createElement('p');
+                p.innerHTML="<h1>"+i+"</h1>";
+                document.getElementById('name').appendChild(p);
+            }
+        };
+        //var q=f();
+
+    </script>
+</body>
+</html>

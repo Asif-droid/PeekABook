@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const getInfo=async()=>{
+            const options={
+                method:'GET'
+            };
+            const url="http://localhost:8080/employee/all";
+            const res=await fetch(url,options);
+            
+            const myj=await res.json();
+            console.log(myj);
+            for(let js of myj){
+                var p=document.createElement('p');
+                p.innerHTML="Name -- "+js.FIRST_NAME;
+                document.getElementById('show').appendChild(p);
+            }
+        }
+
+        const  get_higst_sal=async()=>{
+            const option={
+                method:'GET'
+            };
+            const url="http://localhost:8080/last_name/highst_sal";
+            const res= await fetch(url,option);
+            const myob= await res.json();
+            console.log(myob.len);
+            let p=document.createElement('li');
+            p.innerHTML="<h1>Name "+"           Department "+"         salary</h1>";
+            document.getElementById('sal').appendChild(p);
+            for(let j in myob){
+                var q=document.createElement('li');
+                q.innerHTML=myob[j].LAST_NAME +"   "+myob[j].DEPARTMENT_NAME+ "  "+myob[j].SALARY;
+                //q.innerHTML=j;
+                document.getElementById('sal').appendChild(q);
+            }
+        }
+
+        const genre_s=async()=>{
+           /* const option={
+                method:'GET'
+            };
+            const url="http://localhost:8080/loginId/asif";
+            const res= await fetch(url,option);*/
+
+            window.location.href = "http://localhost:8080/loginId/asif";
+
+            /*const myob= await res.json();
+            console.log(myob.len);
+            let p=document.createElement('p');
+            p.innerHTML="Name "+" Price "+" year";
+            document.getElementById('res').appendChild(p);
+            for(let j in myob){
+                var q=document.createElement('p');
+                q.innerHTML=myob[j].name +" "+myob[j].price+ " "+myob[j].year;
+                //q.innerHTML=j;
+                document.getElementById('res').appendChild(q);
+            }*/
+        }
+        const search=()=>{
+            var q=getElementById('t1').value;
+            let j={
+                q1:q
+            }
+            
+        }
+
+
+
+    </script>
+    <button onclick="getInfo()">click</button>
+    <div id="show book"> </div>
+    <p>Search on genre </p><br>
+    <input id="t1" type="text">
+    <button onclick="genre_s()" > search </button>
+
+    <div id ="show"> </div>
+
+
+    <button onclick="get_higst_sal()">salary</button> 
+    <ul id="sal"> </ul>
+
+    <ul id='res'> </ul>
+
+
+
+</body>
+</html>
